@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //findViewById(R.id.TutorialScreen).setVisibility(View.VISIBLE);
 
         mTaskListView = (ListView) findViewById(R.id.list_todo);
 
@@ -59,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_add_task:
-                //Log.d(TAG, "Add a new task");
-                //findViewById(R.id.TutorialScreen).setVisibility(View.GONE);
                 final EditText taskEditText = new EditText(this);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
