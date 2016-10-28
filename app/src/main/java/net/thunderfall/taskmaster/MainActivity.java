@@ -1,6 +1,7 @@
 package net.thunderfall.taskmaster;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,12 +10,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.thunderfall.taskmaster.db.TaskContract;
@@ -32,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech voice;
     public String toBeSpoken;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //findViewById(R.id.TutorialScreen).setVisibility(View.VISIBLE);
 
         mTaskListView = (ListView) findViewById(R.id.list_todo);
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_add_task:
                 //Log.d(TAG, "Add a new task");
+                //findViewById(R.id.TutorialScreen).setVisibility(View.GONE);
                 final EditText taskEditText = new EditText(this);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         cursor.close();
         db.close();
+        Tutorial();
     }
 
     public void speak(View view){
@@ -139,5 +144,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void Tutorial(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String count = "SELECT COUNT(*) FROM "+TaskContract.TaskEntry.TABLE;
+        Cursor mCursor = db.rawQuery(count, null);
+        mCursor.moveToFirst();
+        int icount = mCursor.getInt(0);
+        if(icount > 0)
+            findViewById(R.id.TutorialScreen).setVisibility(View.GONE);
+        else
+            findViewById(R.id.TutorialScreen).setVisibility(View.VISIBLE);
     }
 }
